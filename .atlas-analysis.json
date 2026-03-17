@@ -1,0 +1,70 @@
+{
+  "projectType": "ai-ml",
+  "projectName": "autoresearch",
+  "projectDescription": "An autonomous AI research framework that runs LLM pretraining experiments on a single GPU overnight, iterating on model architecture and hyperparameters to minimize validation bits-per-byte.",
+  "theme": "palm",
+  "primaryColor": "#7c7c7c",
+  "lightColor": "#0a0a0a",
+  "darkColor": "#c7c7c7",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": ["introduction", "quickstart"]
+          },
+          {
+            "group": "Core Concepts",
+            "pages": [
+              "concepts/how-it-works",
+              "concepts/fixed-time-budget",
+              "concepts/val-bpb-metric",
+              "concepts/program-md"
+            ]
+          },
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/running-the-agent",
+              "guides/experiment-loop",
+              "guides/reading-results",
+              "guides/smaller-hardware"
+            ]
+          },
+          {
+            "group": "Reference",
+            "pages": [
+              "reference/train-py",
+              "reference/prepare-py",
+              "reference/hyperparameters",
+              "reference/gpt-architecture",
+              "reference/muonadamw-optimizer"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Autonomous overnight experimentation — agent modifies train.py, trains for 5 minutes, evaluates, and iterates without human intervention",
+    "Fixed 5-minute time budget per experiment enabling fair comparison across architectures and hyperparameters",
+    "Vocabulary-size-independent val_bpb metric for evaluating across diverse model configurations",
+    "Single-file model: GPT with RoPE, RMSNorm, Flash Attention 3, sliding window attention pattern (SSSL), and value embeddings (ResFormer)",
+    "MuonAdamW optimizer combining Muon (matrix params) and AdamW (embeddings/scalars) with torch.compile fused kernels",
+    "Human-programmable research org via program.md — the 'research org code' that guides agent behavior and strategy",
+    "Self-contained single-GPU setup using uv for reproducible dependency management"
+  ],
+  "publicApiSurface": [
+    "uv run prepare.py — one-time data download and BPE tokenizer training",
+    "uv run train.py — single training experiment (5-minute fixed time budget)",
+    "GPTConfig dataclass — model architecture configuration (sequence_len, vocab_size, n_layer, n_head, n_kv_head, n_embd, window_pattern)",
+    "GPT.setup_optimizer() — constructs MuonAdamW optimizer with per-group learning rates",
+    "GPT.forward(idx, targets, reduction) — forward pass with optional cross-entropy loss",
+    "evaluate_bpb(model, tokenizer, batch_size) — fixed validation bits-per-byte metric",
+    "make_dataloader(tokenizer, B, T, split) — BOS-aligned best-fit packing dataloader",
+    "Tokenizer.from_directory() — load trained BPE tokenizer",
+    "Hyperparameter constants: DEPTH, ASPECT_RATIO, HEAD_DIM, WINDOW_PATTERN, TOTAL_BATCH_SIZE, EMBEDDING_LR, MATRIX_LR, WARMDOWN_RATIO"
+  ]
+}
